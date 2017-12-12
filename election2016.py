@@ -3,6 +3,7 @@ from __future__ import print_function
 from lxml import html
 import requests
 import librato
+import os
 
 # Electoral Vote and Popular Vote
 def handler(event, context):
@@ -21,7 +22,9 @@ def handler(event, context):
     print(republican_popular)
 
     # Send em to Librato
-    api = librato.connect('bryan.mikaelian@gmail.com', '0ccebac11c19151d7274e571d0568fd774cbbc8159f737ef6c5faee53a85322c')
+    username = os.environ['LIBRATO_USER']
+    token = os.environ['LIBRATO_TOKEN']
+    api = librato.connect(username, token)
     api.submit("election.electoral_votes.democrats", democrat_electoral, description="Democrats")
     api.submit("election.electoral_votes.gop", republican_electoral, description="GOP")
 
